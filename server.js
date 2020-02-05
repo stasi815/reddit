@@ -34,5 +34,8 @@ const Post = require('./models/post');
 // Requirements
 require('./controllers/posts.js')(app);
 
+//Mocha variable
+module.exports = app;
+
 // Start Server
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
