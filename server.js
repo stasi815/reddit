@@ -27,12 +27,21 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Add after body parser initialization!
 app.use(expressValidator());
+
+// Get Post model
+const Post = require('./models/post');
+
 // Requirements
 require('./controllers/posts.js')(app);
 
 // Routes
 app.get('/', (req, res) => {
-    res.render('home')
+    Post.find({}).then(posts => {
+        res.render('posts-index', { posts });
+    }).catch(err => {
+        console.log(err.message);
+    });
+    // res.render('posts-index')
 })
 
 app.get('/posts/new', (req, res) => {
