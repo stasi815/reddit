@@ -34,19 +34,5 @@ const Post = require('./models/post');
 // Requirements
 require('./controllers/posts.js')(app);
 
-// Routes
-app.get('/', (req, res) => {
-    Post.find({}).then(posts => {
-        res.render('posts-index', { posts });
-    }).catch(err => {
-        console.log(err.message);
-    });
-    // res.render('posts-index')
-})
-
-app.get('/posts/new', (req, res) => {
-    res.render('posts-new')
-})
-
 // Start Server
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
