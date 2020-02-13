@@ -18,18 +18,18 @@ app.get('/', (req, res) => {
 app.get('/posts/new', (req, res) => {
   res.render('posts-new')
 })
-    // CREATE
-    app.post("/posts/new", (req, res) => {
-    // INSTANTIATE INSTANCE OF POST MODEL
-    const post = new Post(req.body);
-    // SAVE INSTANCE OF POST MODEL TO DB
-    post.save((err, post) => {
-        console.log(err)
-        console.log(post)
-        // REDIRECT TO THE ROOT
-        return res.redirect(`/`);
-      })
-    });
+// CREATE
+app.post("/posts/new", (req, res) => {
+// INSTANTIATE INSTANCE OF POST MODEL
+const post = new Post(req.body);
+// SAVE INSTANCE OF POST MODEL TO DB
+post.save((err, post) => {
+    console.log(err)
+    console.log(post)
+    // REDIRECT TO THE ROOT
+    return res.redirect(`/`);
+  })
+});
 
 //Show a single post
 app.get('/posts/:id', function(req,res){
@@ -39,5 +39,16 @@ app.get('/posts/:id', function(req,res){
   }).catch(err => {
     console.log(err.message);
   });
-})
+});
+
+// SUBREDDIT
+app.get("/n/:subreddit", function(req, res) {
+  Post.find({ subreddit: req.params.subreddit })
+    .then(posts => {
+      res.render("posts-index", { posts });
+    })
+    .catch(err => {
+      console.log(err);
+    });});
+
 }
