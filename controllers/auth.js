@@ -6,6 +6,7 @@ module.exports = (app) => {
     app.get("/sign-up", (req, res) => {
         res.render("sign-up");
     });
+
     // Sign Up POST
     app.post("/sign-up", (req, res) => {
         // Create User and JWT
@@ -22,5 +23,11 @@ module.exports = (app) => {
             console.log(err.message);
             return res.status(400).send({ err:err });
         });
+    });
+
+    // Logout
+    app.get('/logout', (req, res) => {
+        res.clearCookie('nToken');
+        res.redirect('/');
     });
 };
