@@ -1,11 +1,20 @@
+// require dotenv for password encryption
+require("dotenv").config();
+
 // Set db
 require('./data/reddit-db');
 
 // Require Libraries
 const express = require('express');
 
+// Auth requirements
+var cookieParser = require('cookie-parser');
+const jwt = require("jsonwebtoken");
+
 // App Setup
 const app = express();
+
+app.use(cookieParser());
 
 // Static Files
 app.use(express.static('public'));
@@ -34,6 +43,7 @@ const Post = require('./models/post');
 // Requirements
 require('./controllers/posts.js')(app);
 require('./controllers/comments.js')(app);
+require('./controllers/auth.js')(app);
 
 //Mocha variable
 module.exports = app;
