@@ -7,7 +7,8 @@ const PostSchema = new Schema({
     title: { type: String, required: true },
     url: { type: String, required: true },
     summary: { type: String, required: true },
-    subreddit: { type: String, required: true }
+    subreddit: { type: String, required: true },
+    comments: [{ type: Schema.Types.ObjectId, ref: 'Comment'}]
 });
 
 PostSchema.pre("save", function(next) {
@@ -21,6 +22,5 @@ PostSchema.pre("save", function(next) {
 
     next();
   });
-// Post = mongoose.model("Post", PostSchema)
 
 module.exports = mongoose.model("Post", PostSchema);

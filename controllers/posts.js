@@ -34,7 +34,7 @@ post.save((err, post) => {
 //Show a single post
 app.get('/posts/:id', function(req,res){
   //Look up the post
-  Post.findById(req.params.id).then(post => {
+  Post.findById(req.params.id).populate('comments').then(post => {
     res.render('posts-show', { post });
   }).catch(err => {
     console.log(err.message);

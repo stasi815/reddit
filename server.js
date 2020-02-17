@@ -33,6 +33,7 @@ const Post = require('./models/post');
 
 // Requirements
 require('./controllers/posts.js')(app);
+require('./controllers/comments.js')(app);
 
 //Mocha variable
 module.exports = app;
