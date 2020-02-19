@@ -9,26 +9,32 @@
     <title>Reddit.js</title>
   </head>
   <body>
-    <ul class="nav justify-content-end">
-    <li class="nav-item">
-      <a href="/posts/new" class="btn btn-primary navbar-btn">New Post</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="/">Reddit.js</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="/logout">Logout</a>
-    </li>
-        <li class="nav-item">
-        <a class="nav-link" href="/login">Login</a>
-    </li>
-        <li class="nav-item">
-        <a class="nav-link" href="/sign-up">Sign Up</a>
-    </li>
-    </ul>
-    <h1>Reddit.js</h1>
     <div class="container">
-      {{{body}}}
+      <ul class="nav justify-content-end">
+        <li class="nav-item">
+            <a class="nav-link" href="/">Reddit.js</a>
+        </li>
+
+        {{#if currentUser}}
+          <li class="nav-item">
+            <a href="/posts/new" class="btn btn-primary navbar-btn">New Post</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
+          </li>
+        {{else}}
+          <li class="nav-item">
+              <a class="nav-link" href="/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/sign-up">Sign Up</a>
+          </li>
+        {{/if}}
+      </ul>
+      <h1>Reddit.js</h1>
+      <div class="container">
+        {{{body}}}
+      </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
