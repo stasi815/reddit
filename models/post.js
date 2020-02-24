@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const Populate = require("../utils/autopopulate");
 
 const PostSchema = new Schema({
     createdAt: { type: Date },
@@ -12,7 +13,8 @@ const PostSchema = new Schema({
     author : { type: Schema.Types.ObjectId, ref: "User", required: true }
 });
 
-PostSchema.pre("save", function(next) {
+PostSchema
+  .pre("save", function(next) {
     // SET createdAt AND updatedAt
     const now = new Date();
     this.updatedAt = now;
@@ -23,5 +25,10 @@ PostSchema.pre("save", function(next) {
 
     next();
   });
+
+// Always populate the author field
+PostSchema
+  .pre('findOne', Populate('author'))
+  .pre('find', Populate('author'))
 
 module.exports = mongoose.model("Post", PostSchema);
