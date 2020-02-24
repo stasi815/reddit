@@ -1,5 +1,7 @@
-// Require our specific model
+// Require our specific models
 const Post = require('../models/post');
+const User = require('../models/user');
+
 
 //Routes
 
@@ -8,7 +10,8 @@ module.exports = app => {
 app.get('/', (req, res) => {
   const currentUser = req.user;
 
-  Post.find({})
+  console.log(req.cookies);
+  Post.find().populate('author')
   .then(posts => {
       res.render('posts-index', { posts, currentUser });
   })
@@ -24,38 +27,45 @@ app.get('/posts/new', (req, res) => {
   res.render('posts-new')
 });
 
-// // CREATE
-// app.post("/posts/new", (req, res) => {
-// // INSTANTIATE INSTANCE OF POST MODEL
-// const post = new Post(req.body);
-// // SAVE INSTANCE OF POST MODEL TO DB
-// post.save((err, post) => {
-//     console.log(err)
-//     console.log(post)
-//     // REDIRECT TO THE ROOT
-//     return res.redirect(`/`);
-//   })
-// });
-
 // CREATE
 app.post("/posts/new", (req, res) => {
   if (req.user) {
     const post = new Post(req.body);
+    post.author = req.user._id;
 
-    post.save(function(err, post) {
-      return res.redirect(`/`);
+    post
+    .save()
+    .then(post => {
+      return User.findById(req.user._id);
+    })
+    .then(user => {
+      user.posts.unshift(post);
+      user.save();
+      // REDIRECT TO THE NEW POST
+      res.redirect(`/posts/${post._id}`);
+    })
+    .catch(err => {
+      console.log(err.message);
     });
   } else {
-    return res.status(401); // UNAUTHORIZED
+  return res.status(401); // UNAUTHORIZED
   }
 });
+//     (function(err, post) {
+//       return res.redirect(`/`);
+//     });
+//   } else {
+//     return res.status(401); // UNAUTHORIZED
+//   }
+// });
 
 //Show a single post
 app.get('/posts/:id', function(req,res){
   const currentUser = req.user;
 
   //Look up the post
-  Post.findById(req.params.id).populate('comments').then(post => {
+  Post.findById(req.params.id).populate('comments').populate('author')
+  .then(post => {
     res.render('posts-show', { post, currentUser });
   }).catch(err => {
     console.log(err.message);
@@ -64,12 +74,10 @@ app.get('/posts/:id', function(req,res){
 
 // SUBREDDIT
 app.get("/n/:subreddit", function(req, res) {
-
-  Post.find({ subreddit: req.params.subreddit })
+  const currentUser = req.user;
+  Post.find({ subreddit: req.params.subreddit }).populate('author')
     .then(posts => {
-      const currentUser = req.user;
-
-      res.render("posts-index", { posts });
+      res.render("posts-index", { posts, currentUser });
     })
     .catch(err => {
       console.log(err);

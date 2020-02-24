@@ -7,6 +7,7 @@
         <p>{{post.createdAt}}</p>
         <h4>Last Updated:</h4>
         <p>{{post.updatedAt}}</p>
+        <p>{{post.author.username}}</p>
         <form action="/posts/{{post._id}}/comments" method="post">
             <textarea class="form-control" name="content" placeholder="Comment"></textarea>
             <div class="text-right">
@@ -16,6 +17,7 @@
         <h3>Comments</h3>
         {{#each post.comments}}
             <p>{{this.content}}</p>
+            <div><small>{{this.author.username}}</small></div>
         {{/each}}
     </div>
 </div>
