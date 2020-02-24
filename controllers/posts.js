@@ -64,7 +64,7 @@ app.get('/posts/:id', function(req,res){
   const currentUser = req.user;
 
   //Look up the post
-  Post.findById(req.params.id).populate('comments').populate('author')
+  Post.findById(req.params.id).populate({path: 'comments', populate: {path: 'author'}}).populate('author')
   .then(post => {
     res.render('posts-show', { post, currentUser });
   }).catch(err => {

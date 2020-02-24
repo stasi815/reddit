@@ -17,7 +17,7 @@
         <h3>Comments</h3>
         {{#each post.comments}}
             <p>{{this.content}}</p>
-            <div><small>{{this.author.username}}</small></div>
+            <p class="text-right">{{this.author.username}}</p>
         {{/each}}
     </div>
 </div>
