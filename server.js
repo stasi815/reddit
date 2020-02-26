@@ -41,6 +41,7 @@ app.use(expressValidator());
 // checkAuth middleware
 const checkAuth = (req, res, next) => {
     console.log("Checking authentication");
+    // first checks if there's a token stored in the user's cookies
     if (typeof req.cookies.nToken === "undefined" || req.cookies.nToken === null) {
         req.user = null;
     } else {
@@ -48,7 +49,7 @@ const checkAuth = (req, res, next) => {
       const decodedToken = jwt.decode(token, { complete: true }) || {};
       req.user = decodedToken.payload;
     }
-
+    // callback to what was supposed to happen before each route is called; middleware; says, this piece of middleware is finished so you can move on; wouldn't run the next route without this piece; makes it so that we don't go on until that asynchronous process is finished
     next();
   };
   app.use(checkAuth);
@@ -60,6 +61,7 @@ const Post = require('./models/post');
 require('./controllers/posts.js')(app);
 require('./controllers/comments.js')(app);
 require('./controllers/auth.js')(app);
+require('./controllers/replies.js')(app);
 
 //Mocha variable
 module.exports = app;

@@ -81,6 +81,7 @@ app.get("/n/:subreddit", function(req, res) {
     })
     .catch(err => {
       console.log(err);
-    });});
+    });
+  });
 
-}
+};
