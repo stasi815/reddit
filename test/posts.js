@@ -19,6 +19,7 @@ describe('Posts', function() {
         title: 'post title',
         url: 'https://www.google.com',
         summary: 'post summary',
+        subreddit: 'test'
     }
 
     // User we'll use for testing
@@ -45,8 +46,7 @@ describe('Posts', function() {
         // Checks how many posts there are now
         Post.estimatedDocumentCount()
           .then(function (initialDocCount) {
-              chai
-                  .request(app)
+              agent
                   .post("/posts/new")
                   // This line fakes a form post,
                   // since we're not actually filling out a form
